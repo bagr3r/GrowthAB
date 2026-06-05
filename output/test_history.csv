@@ -1,4 +1,4 @@
-test_name,winner,decision
-dataset_01_parceiroA,Grupo 1,Collect more data before scaling Grupo 1
-dataset_02_parceiroB,Grupo 1,Scale Grupo 1
-dataset_03_parceiroC,Grupo 1,Scale Grupo 1
+test_name,partner,winner,profit,roi,decision,stats
+dataset_01_parceiroA,Parceiro A,Grupo 1,404711.0,1.7338020083624648,Coletar mais dados antes de escalar Grupo 1,"{'Grupo 2': {'p_value': np.float64(0.13145227429418885), 'significant': np.False_}, 'Grupo 3': {'p_value': np.float64(9.528422346349859e-07), 'significant': np.True_}}"
+dataset_02_parceiroB,Parceiro B,Grupo 1,286570.0,1.7500351142893784,Escalar Grupo 1 para 100% do tráfego,"{'Grupo 2': {'p_value': np.float64(4.629281478826375e-13), 'significant': np.True_}, 'Grupo 3': {'p_value': np.float64(2.4674986580500824e-23), 'significant': np.True_}}"
+dataset_03_parceiroC,Parceiro C,Grupo 1,34769.0,0.3999930974184345,Escalar Grupo 1 para 100% do tráfego,"{'Grupo 2': {'p_value': np.float64(2.604924382478818e-28), 'significant': np.True_}}"

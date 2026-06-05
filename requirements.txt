@@ -2,3 +2,6 @@ pandas
 numpy
 scipy
 tabulate
+matplotlib
+gspread
+google-auth

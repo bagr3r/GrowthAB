@@ -22,17 +22,17 @@ def save_report(
 
         file.write(f"# {test_name}\n\n")
 
-        file.write("## Summary\n\n")
+        file.write("## Resumo\n\n")
 
         file.write(summary.to_string())
 
         file.write("\n\n")
 
-        file.write(f"## Winner\n\n{winner}\n\n")
+        file.write(f"## Grupo vencedor\n\n{winner}\n\n")
 
         if stats:
 
-            file.write("## Statistical Analysis\n\n")
+            file.write("## Análise estatística\n\n")
 
             for group, result in stats.items():
 
@@ -50,7 +50,7 @@ def save_report(
 
         if recommendation:
 
-            file.write("## Recommendation\n\n")
+            file.write("## Recomendação\n\n")
 
             file.write(
                 f"{recommendation}\n"

@@ -1,5 +1,13 @@
 from pathlib import Path
 
+def format_brl(value):
+
+    return (
+        f"R$ {value:,.2f}"
+        .replace(",", "X")
+        .replace(".", ",")
+        .replace("X", ".")
+    )
 
 def generate_executive_summary(results):
 
@@ -15,7 +23,11 @@ def generate_executive_summary(results):
     ) as file:
 
         file.write(
-            "# Executive Summary\n\n"
+            "# Resumo Executivo\n\n"
+        )
+
+        file.write(
+            "Análise consolidada dos testes A/B de cashback.\n\n"
         )
 
         for result in results:
@@ -25,11 +37,40 @@ def generate_executive_summary(results):
             )
 
             file.write(
-                f"Winner: {result['winner']}\n\n"
+                f"**Grupo vencedor:** {result['winner']}\n\n"
             )
 
             file.write(
-                f"Decision: {result['decision']}\n\n"
+                f"**Lucro:** {format_brl(result['profit'])}\n\n"
+            )
+
+            file.write(
+                f"**ROI:** {result['roi']:.2f}\n\n"
+            )
+
+            file.write(
+                "**Análise Estatística**\n\n"
+            )
+
+            for group, stat in result["stats"].items():
+
+                significance = (
+                    "Significativo"
+                    if stat["significant"]
+                    else "Não significativo"
+                )
+
+                file.write(
+                    f"- Comparação com {group}: "
+                    f"p-value={stat['p_value']:.5f} "
+                    f"({significance})\n"
+                )
+
+            file.write("\n")
+
+            file.write(
+                f"**Recomendação:** "
+                f"{result['decision']}\n\n"
             )
 
             file.write(

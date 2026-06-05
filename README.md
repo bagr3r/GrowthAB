@@ -1,26 +1,30 @@
-# GrowtAB
+# GrowthAB
 
-Motor de análise de testes A/B para campanhas de cashback.
+Solução para análise automatizada de testes A/B de cashback.
+
+O projeto processa datasets de experimentos, identifica a variante vencedora, realiza validação estatística, gera relatórios executivos e registra automaticamente os resultados em uma planilha Google Sheets.
+
+---
 
 ## Objetivo
 
-Analisar automaticamente experimentos de cashback e recomendar qual variante deve ser escalada para 100% do tráfego com base em métricas de negócio e significância estatística.
+Responder à pergunta:
+
+> Dado um teste A/B de cashback, qual variante deve ser escalada para 100% do tráfego?
 
 ---
 
 ## Funcionalidades
 
-- Leitura automática de múltiplos datasets CSV
-- Limpeza e tratamento dos dados
+- Leitura automática de datasets CSV
+- Limpeza e tratamento de dados monetários
 - Cálculo de métricas de negócio
-- Cálculo de lucro por grupo
-- Cálculo de ROI
-- Cálculo da taxa de cashback
-- Escolha automática da variante vencedora
-- Teste de significância estatística (Welch T-Test)
-- Geração de relatórios em Markdown
-- Geração de resumo executivo
-- Histórico consolidado dos testes
+- Seleção da variante vencedora
+- Teste de significância estatística (Welch's T-Test)
+- Geração de relatórios individuais
+- Geração de resumo executivo consolidado
+- Exportação de histórico em CSV
+- Registro automático dos resultados em Google Sheets
 
 ---
 
@@ -31,70 +35,34 @@ GrowtAB/
 
 ├── analyze.py
 ├── requirements.txt
-
 ├── data/
 │   ├── dataset_01_parceiroA.csv
 │   ├── dataset_02_parceiroB.csv
 │   └── dataset_03_parceiroC.csv
-
-├── src/
-│   ├── cleaner.py
-│   ├── decision.py
-│   ├── loader.py
-│   ├── metrics.py
-│   ├── reporter.py
-│   ├── statistics.py
-│   └── summary_generator.py
-
+│
 ├── reports/
 │   ├── dataset_01_parceiroA.md
 │   ├── dataset_02_parceiroB.md
 │   ├── dataset_03_parceiroC.md
 │   └── executive_summary.md
-
-└── output/
-    └── test_history.csv
+│
+├── output/
+│   └── test_history.csv
+│
+└── src/
+    ├── loader.py
+    ├── cleaner.py
+    ├── metrics.py
+    ├── statistics.py
+    ├── decision.py
+    ├── reporter.py
+    ├── summary_generator.py
+    └── google_sheets.py
 ```
 
 ---
 
-## Instalação
-
-Crie um ambiente virtual:
-
-```bash
-python -m venv venv
-```
-
-Ative o ambiente:
-
-Windows:
-
-```bash
-venv\Scripts\activate
-```
-
-Instale as dependências:
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
-## Como executar
-
-Para analisar todos os datasets da pasta `data`:
-
-```bash
-python analyze.py
-```
-
----
-
-## Métricas Utilizadas
-
-A solução avalia cada grupo utilizando:
+## Métricas Calculadas
 
 ### Lucro
 
@@ -122,19 +90,42 @@ cashback_rate = cashback / vendas_totais
 
 ---
 
-## Significância Estatística
+## Análise Estatística
 
-A comparação entre os grupos é realizada utilizando o teste:
+A solução utiliza o teste de Welch (Welch's T-Test) para comparar o grupo vencedor com as demais variantes.
 
-- Welch's T-Test
-
-Critério:
+Critério adotado:
 
 ```text
 p-value < 0.05
 ```
 
-Quando a diferença não é estatisticamente significativa, a recomendação é coletar mais dados antes de escalar uma variante.
+Resultado:
+
+- Significativo → pode escalar
+- Não significativo → coletar mais dados
+
+---
+
+## Como Executar
+
+Instalar dependências:
+
+```bash
+pip install -r requirements.txt
+```
+
+Executar todos os datasets:
+
+```bash
+python analyze.py data
+```
+
+Executar apenas um dataset:
+
+```bash
+python analyze.py data/dataset_01_parceiroA.csv
+```
 
 ---
 
@@ -142,40 +133,39 @@ Quando a diferença não é estatisticamente significativa, a recomendação é 
 
 ### Relatórios
 
-Gerados automaticamente em:
-
 ```text
 reports/
 ```
 
-### Resumo Executivo
+Relatórios individuais para cada teste.
 
-Gerado automaticamente em:
+### Resumo Executivo
 
 ```text
 reports/executive_summary.md
 ```
 
-### Histórico Consolidado
+Resumo consolidado dos resultados.
 
-Gerado automaticamente em:
+### Histórico
 
 ```text
 output/test_history.csv
 ```
 
+Histórico local de todos os testes analisados.
+
+### Google Sheets
+
+Os resultados também são registrados automaticamente em uma planilha Google Sheets para acompanhamento centralizado.
+
 ---
 
-## Exemplo de Decisão
+## Tecnologias Utilizadas
 
-A solução responde à seguinte pergunta:
-
-> "Dado esse teste A/B, qual variante de cashback devemos escalar para 100% do tráfego?"
-
-A recomendação é baseada em:
-
-- Rentabilidade
-- ROI
-- Eficiência do cashback
-- Significância estatística
-
+- Python
+- Pandas
+- NumPy
+- SciPy
+- Google Sheets API
+- GSpread
