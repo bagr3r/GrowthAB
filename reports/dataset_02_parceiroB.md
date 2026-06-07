@@ -1,26 +1,32 @@
-# dataset_02_parceiroB
+# Análise do Teste A/B - dataset_02_parceiroB
 
-## Resumo
+## Objetivo
 
-                    compradores  comissão  cashback  vendas totais     lucro  lucro_por_comprador       roi  cashback_rate
-Grupos de usuários                                                                                                        
-Grupo 1                    7990  450321.0  163751.0      4093818.0  286570.0            35.866083  1.750035       0.040000
-Grupo 2                    5452  314935.0  171778.0      2863019.0  143157.0            26.257704  0.833384       0.059999
-Grupo 3                    5029  289290.0  236697.0      2629963.0   52593.0            10.457944  0.222195       0.090000
+Avaliar qual variante de cashback apresenta o melhor desempenho financeiro e deve ser considerada para expansão.
 
-## Grupo vencedor
+## Resumo dos Resultados
 
-Grupo 1
+| Grupos de usuários   |   compradores | lucro      | lucro_por_comprador   |   roi | cashback_rate   |
+|:---------------------|--------------:|:-----------|:----------------------|------:|:----------------|
+| Grupo 1              |          7990 | R$ 286,570 | R$ 35.87              |  1.75 | 4.00%           |
+| Grupo 2              |          5452 | R$ 143,157 | R$ 26.26              |  0.83 | 6.00%           |
+| Grupo 3              |          5029 | R$ 52,593  | R$ 10.46              |  0.22 | 9.00%           |
 
-## Análise estatística
+## Grupo Vencedor
 
-- Grupo 1 vs Grupo 2
-  - p-value: 0.00000
-  - significant: True
+**Grupo 1**
 
-- Grupo 1 vs Grupo 3
-  - p-value: 0.00000
-  - significant: True
+## Análise Estatística
+
+### Grupo 1 vs Grupo 2
+
+- p-value: 0.00000
+- Resultado: Significativo
+
+### Grupo 1 vs Grupo 3
+
+- p-value: 0.00000
+- Resultado: Significativo
 
 ## Recomendação
 

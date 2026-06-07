@@ -2,7 +2,18 @@
 
 Análise consolidada dos testes A/B de cashback.
 
-## dataset_01_parceiroA
+## Visão Geral
+
+Foram analisados 3 experimentos.
+
+- Testes aprovados para escala: 2
+- Testes que requerem mais dados: 1
+
+---
+
+## Teste Cashback Parceiro A
+
+**Período:** 2011-01-01 até 2011-04-02
 
 **Grupo vencedor:** Grupo 1
 
@@ -19,7 +30,9 @@ Análise consolidada dos testes A/B de cashback.
 
 ---
 
-## dataset_02_parceiroB
+## Teste Cashback Parceiro B
+
+**Período:** 2011-05-01 até 2011-06-30
 
 **Grupo vencedor:** Grupo 1
 
@@ -36,7 +49,9 @@ Análise consolidada dos testes A/B de cashback.
 
 ---
 
-## dataset_03_parceiroC
+## Teste Cashback Parceiro C
+
+**Período:** 2011-07-01 até 2011-08-14
 
 **Grupo vencedor:** Grupo 1
 

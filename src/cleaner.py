@@ -1,3 +1,4 @@
+#Converte valores monetários para float
 def parse_currency(value):
 
     value = str(value)
@@ -8,7 +9,7 @@ def parse_currency(value):
 
     return float(value.strip())
 
-
+#Padroniza as colunas monetárias do dataset antes do cálculo das métricas de negócio
 def clean_dataset(df):
 
     currency_columns = [

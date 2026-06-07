@@ -11,11 +11,14 @@ from src.statistics import significance_test
 from src.summary_generator import generate_executive_summary
 from src.google_sheets import update_google_sheet
 
-
+# Cria diretórios de saída caso ainda não existam
 Path("reports").mkdir(exist_ok=True)
 Path("output").mkdir(exist_ok=True)
 
 
+#permite selecionar a execução:
+#python analyze.py (executa a pasta data completa)
+#python analyze.py data/arquivo.csv(executa somente o arquivo mencionado)
 def get_csv_files():
 
     if len(sys.argv) > 1:
@@ -34,9 +37,10 @@ def get_csv_files():
         Path("data").glob("*.csv")
     )
 
-
+#Estrutura para consolidar os resultados de todos os experimentos
 results = []
 
+#processa cada teste A/B
 csv_files = get_csv_files()
 
 for csv_file in csv_files:
@@ -45,30 +49,34 @@ for csv_file in csv_files:
     print(f"Analisando{csv_file.name}")
     print(f"{'=' * 60}")
 
-    # 1. Load
+    # carrega o dataset
     df = load_dataset(csv_file)
 
     print("\nColunas:")
     print(df.columns.tolist())
 
-    # 2. Clean
+    # limpa e padroniza os dados recebidos
     df = clean_dataset(df)
 
-    # 3. Metrics
+    # Período do experimento
+    start_date = df["Data"].min()
+    end_date = df["Data"].max()
+
+    # Calcula as métricas utilizadas na tomada de decisão
     df = create_metrics(df)
 
-    # 4. Summary
+    # Consolida os resultados por grupo
     summary = build_summary(df)
 
     print("\nResumos:")
     print(summary)
 
-    # 5. Winner
+    # Seleciona a variante com melhor desempenho financeiro
     winner = select_winner(summary)
 
     print(f"\nGrupo vencedor: {winner}")
 
-    # 6. Statistical Analysis
+    # Valida se a superioridade do vencedor é significativa 
     stats = significance_test(df, winner)
 
     print("\nAnálise Estatística:")
@@ -84,7 +92,7 @@ for csv_file in csv_files:
         if not result["significant"]:
             all_significant = False
 
-    # 7. Business Recommendation
+    # Gera e Define a recomendação final
     if all_significant:
         decision = (
         f"Escalar {winner} para 100% do tráfego"
@@ -96,7 +104,7 @@ for csv_file in csv_files:
 
     print(f"\nRecomendação: {decision}")
 
-    # 8. Report
+    # Gera relatório executivo individual por experimento analisado 
     save_report(
         test_name=csv_file.stem,
         summary=summary,
@@ -105,7 +113,7 @@ for csv_file in csv_files:
         recommendation=decision
     )
 
-    # 9. History
+    # Extrai as métricsa finais do grupo vencedor
     winner_profit = summary.loc[
     winner,
     "lucro"
@@ -116,30 +124,55 @@ for csv_file in csv_files:
         "roi"
     ]
 
+    #Registra os resultados para geração do histórico consolidado, resumo executivo e atualização da planilha
     results.append({
-        "test_name": csv_file.stem,
-        "partner": df["Parceiro"].iloc[0],
-        "winner": winner,
-        "profit": winner_profit,
-        "roi": winner_roi,
-        "decision": decision,
-        "stats": stats
-    })
+        "test_name": f"Teste Cashback {df['Parceiro'].iloc[0]}",
+
+        "period": (
+            f"{start_date} até {end_date}"
+        ),
+
+        "description": (
+            f"Comparação entre "
+            f"{df['Grupos de usuários'].nunique()} "
+            f"variantes de cashback"
+        ),
+
+    "result": (
+        f"{winner} apresentou "
+        f"o maior lucro e ROI do teste"
+    ),
+
+    "decision": decision,
+
+    "partner": df["Parceiro"].iloc[0],
+
+    "winner": winner,
+
+    "profit": winner_profit,
+
+    "roi": winner_roi,
+
+    "stats": stats
+})
+
+
 
 print("\nRESULTADOS CONSOLIDADOS:")
 print(results)
 
-# Consolidated History
+# Exporta histórico consolidado em CSV
 pd.DataFrame(results).to_csv(
     "output/test_history.csv",
     index=False
 )
 
-# Executive Summary
+# Gera visão executiva consolidada de todos os experimentos
 generate_executive_summary(
     results
 )
 
+#Atualiza automaticamnete a planilha
 update_google_sheet(results)
 
 print("\nAnálise concluída!")

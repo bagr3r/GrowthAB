@@ -1,4 +1,6 @@
 from scipy.stats import ttest_ind
+
+#Separa os valores da métrica escolhida por grupo 
 def compare_groups(df, metric="lucro"):
 
     groups = {}
@@ -13,6 +15,8 @@ def compare_groups(df, metric="lucro"):
 
     return groups
 
+
+#compara o grupo vencedor com as demais variantes utilizando o teste t de welch
 def significance_test(df, winner):
 
     winner_data = df[
@@ -30,6 +34,7 @@ def significance_test(df, winner):
             df["Grupos de usuários"] == group
         ]["lucro"]
 
+        #avalia se a diferença observada entre os grupos é estatisticamente significativa
         statistic, p_value = ttest_ind(
             winner_data,
             challenger,

@@ -2,7 +2,7 @@ import gspread
 
 from google.oauth2.service_account import Credentials
 
-
+#Registra os resultados dos experimentos na planilha no google sheets
 def update_google_sheet(results):
 
     scopes = [
@@ -10,6 +10,7 @@ def update_google_sheet(results):
         "https://www.googleapis.com/auth/drive"
     ]
 
+    #Autentica utilizando uma conta de serviço configurada no Google Cloud Plataform
     credentials = Credentials.from_service_account_file(
         "growthab-498518-571f44151b75.json",
         scopes=scopes
@@ -19,6 +20,7 @@ def update_google_sheet(results):
         credentials
     )
 
+    #abre a planilha de acompanhamento dos testes
     spreadsheet = client.open(
         "GrowthAB - testes"
     )
@@ -29,9 +31,12 @@ def update_google_sheet(results):
 
         worksheet.append_row([
             result["test_name"],
+            result["period"],
+            result["description"],
+            result["result"],
+            result["decision"],
             result["partner"],
             result["winner"],
-            float(result["profit"]),
-            round(float(result["roi"]), 2),
-            result["decision"]
+            round(result["profit"], 2),
+            round(result["roi"], 2)
         ])

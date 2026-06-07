@@ -1,5 +1,7 @@
 from pathlib import Path
 
+
+# Formata valores monetários para o padrão brasileiro
 def format_brl(value):
 
     return (
@@ -9,7 +11,22 @@ def format_brl(value):
         .replace("X", ".")
     )
 
+
+# Gera um resumo executivo consolidado com os principais resultados dos experimentos
 def generate_executive_summary(results):
+
+    # Calcula estatísticas gerais dos experimentos
+    total_tests = len(results)
+
+    scaled_tests = sum(
+        1
+        for result in results
+        if "100%" in result["decision"]
+    )
+
+    collect_tests = (
+        total_tests - scaled_tests
+    )
 
     report_path = (
         Path("reports")
@@ -22,6 +39,7 @@ def generate_executive_summary(results):
         encoding="utf-8"
     ) as file:
 
+        # Cabeçalho do documento
         file.write(
             "# Resumo Executivo\n\n"
         )
@@ -30,6 +48,31 @@ def generate_executive_summary(results):
             "Análise consolidada dos testes A/B de cashback.\n\n"
         )
 
+        # Apresenta uma visão geral dos experimentos
+        file.write(
+            "## Visão Geral\n\n"
+        )
+
+        file.write(
+            f"Foram analisados "
+            f"{total_tests} experimentos.\n\n"
+        )
+
+        file.write(
+            f"- Testes aprovados para escala: "
+            f"{scaled_tests}\n"
+        )
+
+        file.write(
+            f"- Testes que requerem mais dados: "
+            f"{collect_tests}\n\n"
+        )
+
+        file.write(
+            "---\n\n"
+        )
+
+        # Adiciona uma seção para cada experimento
         for result in results:
 
             file.write(
@@ -37,17 +80,25 @@ def generate_executive_summary(results):
             )
 
             file.write(
-                f"**Grupo vencedor:** {result['winner']}\n\n"
+                f"**Período:** {result['period']}\n\n"
             )
 
             file.write(
-                f"**Lucro:** {format_brl(result['profit'])}\n\n"
+                f"**Grupo vencedor:** "
+                f"{result['winner']}\n\n"
             )
 
             file.write(
-                f"**ROI:** {result['roi']:.2f}\n\n"
+                f"**Lucro:** "
+                f"{format_brl(result['profit'])}\n\n"
             )
 
+            file.write(
+                f"**ROI:** "
+                f"{result['roi']:.2f}\n\n"
+            )
+
+            # Resume os resultados estatísticos
             file.write(
                 "**Análise Estatística**\n\n"
             )
@@ -68,6 +119,7 @@ def generate_executive_summary(results):
 
             file.write("\n")
 
+            # Registra a recomendação final
             file.write(
                 f"**Recomendação:** "
                 f"{result['decision']}\n\n"
